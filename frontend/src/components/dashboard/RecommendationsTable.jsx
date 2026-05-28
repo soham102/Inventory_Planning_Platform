@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, Fragment } from "react";
 import { Search, ChevronLeft, ChevronRight, ChevronDown, Sparkles, Loader2 } from "lucide-react";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -181,12 +181,12 @@ export const RecommendationsTable = ({ jobId, rows = [] }) => {
           <TableBody>
             {pageRows.map((r, i) => {
               const globalIdx = page * PAGE_SIZE + i;
+              const rowKey = `${r.warehouse_id}-${r.item_id}-${globalIdx}`;
               const isOpen = expanded === globalIdx;
               const reasoning = reasoningMap[globalIdx];
               return (
-                <>
+                <Fragment key={rowKey}>
                   <TableRow
-                    key={globalIdx}
                     data-testid={`row-${globalIdx}`}
                     className="border-slate-800 hover:bg-slate-800/50 cursor-pointer"
                     onClick={() => toggleRow(globalIdx, r)}
@@ -257,7 +257,7 @@ export const RecommendationsTable = ({ jobId, rows = [] }) => {
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </Fragment>
               );
             })}
             {!pageRows.length && (
