@@ -1,0 +1,149 @@
+{
+  "project_name": "Inventory Command Center",
+  "theme": "dark",
+  "archetype": "Archetype 2: The Performance Pro (Command Center Variant)",
+  "visual_mood": "Premium Tactical SaaS. Deep slate canvas with glowing neon cyan and emerald green accents. High contrast, scan-first, highly functional. Feels like a logistics mission control.",
+  "typography": {
+    "primary_heading_font": "Chivo",
+    "secondary_body_font": "IBM Plex Sans",
+    "monospace_number_font": "IBM Plex Mono",
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl font-black tracking-tight",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-semibold tracking-tight",
+      "h4": "text-lg font-bold tracking-tight",
+      "body": "text-sm sm:text-base leading-relaxed",
+      "small_labels": "text-xs font-bold uppercase tracking-[0.1em]",
+      "kpi_numbers": "text-3xl sm:text-4xl font-mono font-bold tracking-tighter"
+    }
+  },
+  "colors": {
+    "background": {
+      "base": "#020617",
+      "surface": "#0F172A",
+      "surface_elevated": "#1E293B",
+      "glass": "rgba(15, 23, 42, 0.7)"
+    },
+    "borders": {
+      "default": "#1E293B",
+      "subtle": "#334155",
+      "focus": "#22D3EE"
+    },
+    "text": {
+      "primary": "#F8FAFC",
+      "secondary": "#94A3B8",
+      "muted": "#64748B"
+    },
+    "brand_accents": {
+      "cyan_primary": "#22D3EE",
+      "cyan_glow": "rgba(34, 211, 238, 0.2)",
+      "emerald_success": "#10B981",
+      "emerald_glow": "rgba(16, 185, 129, 0.2)"
+    },
+    "status": {
+      "critical_red": "#EF4444",
+      "warning_amber": "#F59E0B",
+      "healthy_green": "#10B981",
+      "info_blue": "#3B82F6"
+    }
+  },
+  "spacing_and_layout": {
+    "grid_system": "Control Room Grid Protocol. Dense, functional, strict hierarchy.",
+    "gap_strategy": "gap-4 for dense widget clusters, gap-6 for macro section separation.",
+    "padding": "p-4 or p-6 inside cards to maximize data density while preserving readability.",
+    "border_radius": "rounded-lg (8px) for cards and containers. Sharp enough for a technical feel, soft enough to be modern.",
+    "page_structure": {
+      "sidebar": "Fixed width 256px (hidden on mobile, off-canvas menu), pure #020617 background, border-r border-slate-800.",
+      "top_navbar": "Sticky top, h-16, backdrop-blur-xl bg-slate-950/80, border-b border-slate-800.",
+      "main_content": "pt-16 pl-0 md:pl-64 min-h-screen bg-slate-950 text-slate-50."
+    }
+  },
+  "surface_strategies": {
+    "dashboard_cards": {
+      "background": "bg-slate-900",
+      "border": "border border-slate-800",
+      "shadow": "shadow-sm shadow-black/50",
+      "hover_state": "hover:border-slate-700 transition-colors duration-200"
+    },
+    "critical_alerts": {
+      "background": "bg-red-500/10",
+      "border": "border border-red-500/30",
+      "text": "text-red-400"
+    },
+    "ai_reasoning_panel": {
+      "background": "bg-slate-800/50",
+      "border": "border-l-2 border-cyan-400",
+      "padding": "p-4"
+    },
+    "glass_header": {
+      "background": "bg-slate-950/80",
+      "blur": "backdrop-blur-xl",
+      "border": "border-b border-slate-800"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-md transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)]",
+      "secondary": "bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-50 px-4 py-2 rounded-md transition-all",
+      "outline": "border border-slate-700 hover:border-slate-500 text-slate-300 px-4 py-2 rounded-md transition-all"
+    },
+    "tables": {
+      "style": "Shadcn UI table, highly dense. bg-slate-900, border-collapse, border border-slate-800.",
+      "header": "bg-slate-950 text-slate-400 text-xs uppercase tracking-wider sticky top-0",
+      "rows": "border-b border-slate-800 hover:bg-slate-800/50 transition-colors",
+      "badges": "rounded-full px-2 py-0.5 text-xs font-bold"
+    },
+    "upload_dropzone": {
+      "style": "border-2 border-dashed border-slate-700 hover:border-cyan-500 bg-slate-900/50 hover:bg-slate-900 transition-all rounded-xl p-12 flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]"
+    },
+    "charts": {
+      "library": "Recharts",
+      "tooltip": "Custom tooltip with bg-slate-900, border border-slate-700, text-slate-100 shadow-xl",
+      "grid_lines": "stroke-slate-800 stroke-dasharray-3-3",
+      "colors": ["#22D3EE", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"]
+    }
+  },
+  "interactions_and_motion": {
+    "hover": "Subtle border color shifts (slate-800 to slate-600) and slight transform (-translate-y-[1px]) for interactive cards.",
+    "transitions": "All state changes should use transition-all duration-200 ease-in-out.",
+    "loading": "Use skeleton loaders (animate-pulse bg-slate-800) matching the exact dimensions of the expected content."
+  },
+  "media_and_icons": {
+    "icon_library": "@phosphor-icons/react",
+    "icon_style": "weight=\"duotone\" for nav and decorative, weight=\"bold\" for functional actions.",
+    "image_urls": [
+      {
+        "category": "empty_state_background",
+        "url": "https://static.prod-images.emergentagent.com/jobs/74c7cff0-4eaf-4a72-a280-70d766d32869/images/2714bfb7c9741d6995ca7a94ad06697d2ae22948f170a4acee3a51d6cbcfc798.png",
+        "description": "Abstract dark tactical grid with glowing cyan nodes. Use this as a very subtle, low-opacity (opacity-10 or 20) absolute background behind the initial Upload Dropzone to make the empty state feel premium and technical."
+      }
+    ]
+  },
+  "instructions_to_main_agent": {
+    "setup": [
+      "Install required fonts: Chivo, IBM Plex Sans, IBM Plex Mono (Google Fonts).",
+      "Install @phosphor-icons/react for premium technical icons.",
+      "Install recharts for data visualization.",
+      "Install lucide-react (if not present) as fallback, but prefer Phosphor.",
+      "Configure Tailwind config with the specified slate, cyan, and emerald color palettes.",
+      "Ensure all routes (Dashboard, Inventory Health, Stockout Risks, Recommendations, Reports, Settings) are established using react-router-dom."
+    ],
+    "state_management": [
+      "The app MUST start in an 'Empty State'. No data should be visible. The main view should exclusively show the Upload Dropzone.",
+      "Implement a mock file upload flow: User clicks/drags file -> simulate 2s loading with progress bar -> set global state 'isDataLoaded' to true.",
+      "Once 'isDataLoaded' is true, reveal the full Dashboard with all KPIs, Charts, Alerts, and Tables."
+    ],
+    "component_implementation": [
+      "KPI Cards (5): Must be a 5-column grid on desktop (grid-cols-5). Use IBM Plex Mono for the giant metric numbers.",
+      "Charts Section (5 charts): Layout in a bento grid. Top row: City-wise Bar (col-span-2), Risk Pie (col-span-1), Top Risky SKUs (col-span-2). Bottom row: Quantity Line (col-span-3), Lead Time vs Inventory Days (col-span-2).",
+      "Recommendations Table: Implement search input, filter dropdowns (Risk Level), and pagination. Ensure the header is sticky. Add a 'Risk Badge' column (Red/Amber/Green).",
+      "AI Reasoning Cards: Within the table (perhaps as an expandable row or a side drawer), show the 'AI Reasoning' for the recommendation using the defined 'ai_reasoning_panel' style. It should look like LLM-generated text (e.g., 'Demand spiked 40% in BLR-01. Lead time is 3 days. Recommend sending 500 units immediately.').",
+      "Critical Alerts Panel: Stacked cards on the right side or top of the dashboard using the critical_alerts red tint style.",
+      "Use Shadcn UI components extensively (Card, Table, Badge, Button, Input, Select, Dialog) but override their default white/light borders with the slate-900/slate-800 dark theme definitions provided here."
+    ],
+    "testing_and_accessibility": [
+      "Ensure all interactive elements have data-testid attributes (e.g., data-testid='upload-dropzone', data-testid='download-ro-btn').",
+      "Contrast must be high: use slate-50 for primary text, slate-400 for secondary text on slate-900 backgrounds."
+    ]
+  }
+}
