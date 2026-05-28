@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useInventory } from "@/store/inventoryStore";
 import { RecommendationsTable } from "@/components/dashboard/RecommendationsTable";
 import { DownloadSection } from "@/components/dashboard/DownloadSection";
@@ -7,11 +8,23 @@ import { ListChecks } from "lucide-react";
 
 export default function Recommendations() {
   const { job } = useInventory();
+  const [params] = useSearchParams();
   if (!job) return <EmptyState icon={ListChecks} title="Recommendations" hint="Upload an inventory file from the Dashboard to see replenishment recommendations." />;
+
+  const initialRisk = params.get("risk") || "ALL";
+  const initialAlert = params.get("alert") || "ALL";
+  const initialCity = params.get("city") || "ALL";
+
   return (
     <div className="space-y-6 animate-fade-up">
       <PageHeader title="Recommendations" subtitle="Every SKU-warehouse pair with quantity-to-send and AI reasoning." tag="REPLENISHMENT" />
-      <RecommendationsTable jobId={job.job_id} rows={job.recommendations} />
+      <RecommendationsTable
+        jobId={job.job_id}
+        rows={job.recommendations}
+        initialRisk={initialRisk}
+        initialAlert={initialAlert}
+        initialCity={initialCity}
+      />
       <DownloadSection jobId={job.job_id} rowCount={job.row_count} replenishQty={job.kpis.total_replenishment_qty} />
     </div>
   );

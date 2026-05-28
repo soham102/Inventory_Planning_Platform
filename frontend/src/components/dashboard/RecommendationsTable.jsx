@@ -49,11 +49,11 @@ const AlertBadge = ({ alert }) => {
   );
 };
 
-export const RecommendationsTable = ({ jobId, rows = [] }) => {
+export const RecommendationsTable = ({ jobId, rows = [], initialRisk = "ALL", initialAlert = "ALL", initialCity = "ALL" }) => {
   const [search, setSearch] = useState("");
-  const [riskFilter, setRiskFilter] = useState("ALL");
-  const [alertFilter, setAlertFilter] = useState("ALL");
-  const [cityFilter, setCityFilter] = useState("ALL");
+  const [riskFilter, setRiskFilter] = useState(initialRisk);
+  const [alertFilter, setAlertFilter] = useState(initialAlert);
+  const [cityFilter, setCityFilter] = useState(initialCity);
   const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState(null);
   const [reasoningMap, setReasoningMap] = useState({}); // key: idx -> text | "loading"

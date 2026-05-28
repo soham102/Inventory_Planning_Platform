@@ -1,4 +1,5 @@
 import { AlertTriangle, Package, Warehouse, ShieldCheck, ClipboardList, TrendingUp, TrendingDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { DASH } from "@/constants/testIds";
 
 const cards = [
@@ -13,6 +14,7 @@ const cards = [
     fmt: (v) => v.toLocaleString(),
     trend: "up",
     sub: "Imminent stockout",
+    to: "/stockout-risks",
   },
   {
     key: "total_replenishment_qty",
@@ -25,6 +27,7 @@ const cards = [
     fmt: (v) => v.toLocaleString(),
     trend: "up",
     sub: "Units to dispatch",
+    to: "/recommendations?alert=PLACE+ORDER",
   },
   {
     key: "warehouses_at_risk",
@@ -37,6 +40,7 @@ const cards = [
     fmt: (v) => v.toLocaleString(),
     trend: "flat",
     sub: "Need urgent action",
+    to: "/inventory-health",
   },
   {
     key: "healthy_inventory_pct",
@@ -49,6 +53,7 @@ const cards = [
     fmt: (v) => `${v}%`,
     trend: "down",
     sub: "Low risk SKUs",
+    to: "/recommendations?risk=LOW",
   },
   {
     key: "pending_orders",
@@ -61,20 +66,24 @@ const cards = [
     fmt: (v) => v.toLocaleString(),
     trend: "up",
     sub: "Awaiting RO place",
+    to: "/recommendations?alert=PLACE+ORDER",
   },
 ];
 
 export const KPICards = ({ kpis }) => {
+  const navigate = useNavigate();
   return (
     <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-      {cards.map(({ key, title, icon: Icon, accent, bg, border, tid, fmt, trend, sub }, i) => {
+      {cards.map(({ key, title, icon: Icon, accent, bg, border, tid, fmt, trend, sub, to }, i) => {
         const value = kpis?.[key] ?? 0;
         return (
-          <div
+          <button
+            type="button"
             key={key}
             data-testid={tid}
+            onClick={() => navigate(to)}
             style={{ animationDelay: `${i * 60}ms` }}
-            className="animate-fade-up group rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all p-4 hover:-translate-y-0.5"
+            className="text-left animate-fade-up group rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition-all p-4 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 cursor-pointer"
           >
             <div className="flex items-start justify-between">
               <div className={`w-9 h-9 rounded-md ${bg} ${border} border flex items-center justify-center`}>
@@ -88,8 +97,13 @@ export const KPICards = ({ kpis }) => {
             <div className={`mt-1 font-mono-num text-3xl lg:text-4xl font-bold tracking-tighter ${accent}`}>
               {fmt(value)}
             </div>
-            <div className="mt-1 text-xs text-slate-500">{sub}</div>
-          </div>
+            <div className="mt-1 flex items-center justify-between text-xs text-slate-500">
+              <span>{sub}</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-cyan-300 font-bold uppercase tracking-[0.1em] text-[9px]">
+                View →
+              </span>
+            </div>
+          </button>
         );
       })}
     </div>
