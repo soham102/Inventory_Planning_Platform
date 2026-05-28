@@ -53,15 +53,23 @@ export const RecommendationsTable = ({ jobId, rows = [] }) => {
   const [search, setSearch] = useState("");
   const [riskFilter, setRiskFilter] = useState("ALL");
   const [alertFilter, setAlertFilter] = useState("ALL");
+  const [cityFilter, setCityFilter] = useState("ALL");
   const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState(null);
   const [reasoningMap, setReasoningMap] = useState({}); // key: idx -> text | "loading"
+
+  const cities = useMemo(() => {
+    const set = new Set();
+    for (const r of rows) if (r.city) set.add(r.city);
+    return Array.from(set).sort();
+  }, [rows]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return rows.filter((r) => {
       if (riskFilter !== "ALL" && r.stockout_risk !== riskFilter) return false;
       if (alertFilter !== "ALL" && r.alert !== alertFilter) return false;
+      if (cityFilter !== "ALL" && r.city !== cityFilter) return false;
       if (!q) return true;
       return (
         String(r.item_id).toLowerCase().includes(q) ||
@@ -69,7 +77,7 @@ export const RecommendationsTable = ({ jobId, rows = [] }) => {
         String(r.city).toLowerCase().includes(q)
       );
     });
-  }, [rows, search, riskFilter, alertFilter]);
+  }, [rows, search, riskFilter, alertFilter, cityFilter]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageRows = filtered.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
@@ -123,6 +131,24 @@ export const RecommendationsTable = ({ jobId, rows = [] }) => {
               className="bg-transparent border-0 h-7 p-0 text-sm placeholder:text-slate-500 focus-visible:ring-0"
             />
           </div>
+
+          <Select
+            value={cityFilter}
+            onValueChange={(v) => {
+              setCityFilter(v);
+              setPage(0);
+            }}
+          >
+            <SelectTrigger data-testid="filter-city" className="h-9 w-full sm:w-36 bg-slate-950 border-slate-800 text-slate-200">
+              <SelectValue placeholder="City" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-900 border-slate-800 text-slate-200 max-h-72">
+              <SelectItem value="ALL">All Cities</SelectItem>
+              {cities.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <Select
             value={riskFilter}
