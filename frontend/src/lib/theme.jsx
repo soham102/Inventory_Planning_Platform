@@ -1,8 +1,19 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
 
-const ThemeContext = createContext({ theme: "dark", setTheme: () => {}, toggle: () => {} });
+const ThemeContext = createContext({
+  mode: "system",        // user selection: "light" | "dark" | "system"
+  theme: "dark",         // resolved theme actually applied: "light" | "dark"
+  setMode: () => {},
+  toggle: () => {},
+});
 
-const STORAGE_KEY = "icc-theme";
+const STORAGE_KEY = "icc-theme-mode";
+const MEDIA_QUERY = "(prefers-color-scheme: dark)";
+
+function getSystemTheme() {
+  if (typeof window === "undefined") return "dark";
+  return window.matchMedia(MEDIA_QUERY).matches ? "dark" : "light";
+}
 
 function applyClass(theme) {
   const root = document.documentElement;
@@ -11,25 +22,48 @@ function applyClass(theme) {
   root.style.colorScheme = theme;
 }
 
-export function ThemeProvider({ children, defaultTheme = "dark" }) {
-  const [theme, setThemeState] = useState(() => {
-    if (typeof window === "undefined") return defaultTheme;
-    return window.localStorage.getItem(STORAGE_KEY) || defaultTheme;
+export function ThemeProvider({ children, defaultMode = "system" }) {
+  const [mode, setModeState] = useState(() => {
+    if (typeof window === "undefined") return defaultMode;
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark" || stored === "system") return stored;
+    return defaultMode;
   });
+
+  const [systemTheme, setSystemTheme] = useState(() => getSystemTheme());
+
+  // Listen to system theme changes when in "system" mode (or always, cheap)
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mql = window.matchMedia(MEDIA_QUERY);
+    const handler = (e) => setSystemTheme(e.matches ? "dark" : "light");
+    if (mql.addEventListener) mql.addEventListener("change", handler);
+    else mql.addListener(handler);
+    return () => {
+      if (mql.removeEventListener) mql.removeEventListener("change", handler);
+      else mql.removeListener(handler);
+    };
+  }, []);
+
+  const theme = mode === "system" ? systemTheme : mode;
 
   useEffect(() => {
     applyClass(theme);
-    try { window.localStorage.setItem(STORAGE_KEY, theme); } catch {}
   }, [theme]);
 
-  const setTheme = useCallback((t) => setThemeState(t), []);
-  const toggle = useCallback(() => setThemeState((t) => (t === "dark" ? "light" : "dark")), []);
+  useEffect(() => {
+    try { window.localStorage.setItem(STORAGE_KEY, mode); } catch {}
+  }, [mode]);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggle }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  const setMode = useCallback((m) => setModeState(m), []);
+  const toggle = useCallback(() => {
+    // Cycle through: light -> dark -> system -> light
+    setModeState((m) => (m === "light" ? "dark" : m === "dark" ? "system" : "light"));
+  }, []);
+
+  const value = useMemo(() => ({ mode, theme, setMode, toggle }), [mode, theme, setMode, toggle]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export const useTheme = () => useContext(ThemeContext);

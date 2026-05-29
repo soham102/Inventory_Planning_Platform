@@ -33,7 +33,7 @@ function AppInner() {
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultMode="system">
       <AppInner />
     </ThemeProvider>
   );

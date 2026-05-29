@@ -1,11 +1,14 @@
-import { Bell, Search, ChevronDown, Sun, Moon } from "lucide-react";
+import { Bell, Search, ChevronDown, Sun, Moon, Monitor, Check } from "lucide-react";
 import { NAV } from "@/constants/testIds";
 import { useInventory } from "@/store/inventoryStore";
 import { useTheme } from "@/lib/theme";
+import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export const TopBar = () => {
   const { job } = useInventory();
-  const { theme, toggle } = useTheme();
+  const { mode, theme, setMode } = useTheme();
   const filename = job?.filename ?? "No file uploaded";
   const rows = job?.row_count ?? 0;
 
@@ -45,18 +48,45 @@ export const TopBar = () => {
             <kbd className="hidden xl:inline px-1.5 py-0.5 rounded text-[10px] font-mono-num text-slate-500 dark:text-slate-500 dark:text-slate-500 border border-slate-300 dark:border-slate-700">⌘K</kbd>
           </div>
 
-          <button
-            data-testid="theme-toggle"
-            onClick={toggle}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            className="relative w-9 h-9 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-          >
-            {theme === "dark" ? (
-              <Sun className="w-4 h-4 text-amber-500 dark:text-amber-300" />
-            ) : (
-              <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
-            )}
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                data-testid="theme-toggle"
+                aria-label="Change theme"
+                className="relative w-9 h-9 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-4 h-4 text-amber-500 dark:text-amber-300" />
+                ) : (
+                  <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                )}
+                {mode === "system" && (
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-cyan-500 border-2 border-white dark:border-slate-900"
+                  />
+                )}
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              {[
+                { value: "light", label: "Light", icon: Sun },
+                { value: "dark", label: "Dark", icon: Moon },
+                { value: "system", label: "System", icon: Monitor },
+              ].map(({ value, label, icon: Icon }) => (
+                <DropdownMenuItem
+                  key={value}
+                  data-testid={`theme-option-${value}`}
+                  onClick={() => setMode(value)}
+                  className="cursor-pointer flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 focus:bg-slate-100 dark:focus:bg-slate-800 focus:text-slate-900 dark:focus:text-slate-100"
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="flex-1">{label}</span>
+                  {mode === value && <Check className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-300" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <button
             data-testid={NAV.notification}
