@@ -36,12 +36,12 @@ export default function Settings() {
 }
 
 const Card = ({ icon: Icon, title, children }) => (
-  <div className="rounded-lg bg-slate-900 border border-slate-800 p-5">
+  <div className="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5">
     <div className="flex items-center gap-2 mb-4">
       <div className="w-8 h-8 rounded-md bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-        <Icon className="w-4 h-4 text-cyan-300" />
+        <Icon className="w-4 h-4 text-cyan-600 dark:text-cyan-300" />
       </div>
-      <h3 className="font-display font-bold text-slate-100">{title}</h3>
+      <h3 className="font-display font-bold text-slate-900 dark:text-slate-100">{title}</h3>
     </div>
     <div className="space-y-3">{children}</div>
   </div>
@@ -50,8 +50,8 @@ const Card = ({ icon: Icon, title, children }) => (
 const Field = ({ label, value, hint, mono }) => (
   <div className="flex items-start justify-between gap-4 py-1">
     <div>
-      <div className="text-sm text-slate-200">{label}</div>
-      {hint && <div className="text-xs text-slate-500 mt-0.5">{hint}</div>}
+      <div className="text-sm text-slate-800 dark:text-slate-200">{label}</div>
+      {hint && <div className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-0.5">{hint}</div>}
     </div>
     <div className={`text-sm ${mono ? "font-mono-num" : ""} text-cyan-300`}>{value}</div>
   </div>
@@ -59,7 +59,7 @@ const Field = ({ label, value, hint, mono }) => (
 
 const Toggle = ({ label, defaultChecked }) => (
   <div className="flex items-center justify-between py-1">
-    <div className="text-sm text-slate-200">{label}</div>
+    <div className="text-sm text-slate-800 dark:text-slate-200">{label}</div>
     <Switch defaultChecked={defaultChecked} />
   </div>
 );

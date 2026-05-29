@@ -3,7 +3,7 @@ import { TopBar } from "./TopBar";
 
 export const AppShell = ({ children }) => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50">
       <Sidebar />
       <TopBar />
       <main className="pt-16 md:pl-64 min-h-screen">

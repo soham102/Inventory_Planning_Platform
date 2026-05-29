@@ -37,24 +37,24 @@ export const CityBreakdownDrawer = ({ city, allRows, open, onOpenChange }) => {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="bg-slate-950 border-l border-slate-800 text-slate-50 w-full sm:max-w-xl p-0 overflow-hidden flex flex-col"
+        className="bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-50 w-full sm:max-w-xl p-0 overflow-hidden flex flex-col"
         data-testid="city-drawer"
       >
-        <SheetHeader className="px-6 pt-6 pb-4 border-b border-slate-800 space-y-3">
+        <SheetHeader className="px-6 pt-6 pb-4 border-b border-slate-200 dark:border-slate-800 space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-cyan-300" />
+              <Building2 className="w-5 h-5 text-cyan-600 dark:text-cyan-300" />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-cyan-300">CITY DRILL-DOWN</div>
-              <SheetTitle className="font-display text-2xl font-black tracking-tight text-slate-50">
+              <div className="text-[10px] uppercase tracking-[0.18em] font-bold text-cyan-600 dark:text-cyan-300">CITY DRILL-DOWN</div>
+              <SheetTitle className="font-display text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">
                 {city ?? ""}
               </SheetTitle>
             </div>
           </div>
-          <SheetDescription className="text-slate-400 text-sm">
+          <SheetDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
             {rowsForCity.length} SKU-warehouse pairs ·{" "}
-            <span className="font-mono-num text-cyan-300">{totalSend}</span> units to dispatch
+            <span className="font-mono-num text-cyan-600 dark:text-cyan-300">{totalSend}</span> units to dispatch
           </SheetDescription>
 
           <div className="grid grid-cols-3 gap-2">
@@ -63,11 +63,11 @@ export const CityBreakdownDrawer = ({ city, allRows, open, onOpenChange }) => {
               return (
                 <div
                   key={k}
-                  className="rounded-md bg-slate-900 border border-slate-800 px-3 py-2 flex items-center gap-2"
+                  className="rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center gap-2"
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
                   <div className="leading-tight">
-                    <div className="text-[9px] uppercase tracking-[0.15em] font-bold text-slate-500">{meta.label}</div>
+                    <div className="text-[9px] uppercase tracking-[0.15em] font-bold text-slate-500 dark:text-slate-500 dark:text-slate-500">{meta.label}</div>
                     <div className={`font-mono-num text-base font-bold ${meta.color}`}>
                       {grouped[k].length}
                     </div>
@@ -79,13 +79,13 @@ export const CityBreakdownDrawer = ({ city, allRows, open, onOpenChange }) => {
         </SheetHeader>
 
         <Tabs value={tab} onValueChange={setTab} className="flex-1 flex flex-col min-h-0">
-          <TabsList className="mx-6 mt-4 bg-slate-900 border border-slate-800 grid grid-cols-3 h-9">
+          <TabsList className="mx-6 mt-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 grid grid-cols-3 h-9">
             {(["HIGH", "MEDIUM", "LOW"]).map((k) => (
               <TabsTrigger
                 key={k}
                 value={k}
                 data-testid={`tab-${k.toLowerCase()}`}
-                className="data-[state=active]:bg-slate-800 data-[state=active]:text-slate-50 text-slate-400 text-xs font-bold uppercase tracking-[0.1em]"
+                className="data-[state=active]:bg-slate-800 data-[state=active]:text-slate-50 text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-[0.1em]"
               >
                 <span className={`w-1.5 h-1.5 rounded-full mr-2 ${RISK_META[k].dot}`} />
                 {RISK_META[k].label} <span className="ml-1.5 font-mono-num opacity-70">{grouped[k].length}</span>
@@ -108,8 +108,8 @@ const RiskList = ({ rows, risk }) => {
   if (!rows.length) {
     const Icon = risk === "LOW" ? ShieldCheck : AlertTriangle;
     return (
-      <div className="rounded-lg border border-dashed border-slate-800 p-8 flex flex-col items-center justify-center text-center text-slate-500">
-        <Icon className="w-6 h-6 mb-2 text-slate-600" />
+      <div className="rounded-lg border border-dashed border-slate-200 dark:border-slate-800 p-8 flex flex-col items-center justify-center text-center text-slate-500 dark:text-slate-500 dark:text-slate-500">
+        <Icon className="w-6 h-6 mb-2 text-slate-500 dark:text-slate-500 dark:text-slate-400 dark:text-slate-600" />
         <div className="text-sm">No {RISK_META[risk].label.toLowerCase()}-risk SKUs in this city.</div>
       </div>
     );
@@ -126,22 +126,22 @@ const RiskList = ({ rows, risk }) => {
 const RowCard = ({ r, risk }) => {
   const meta = RISK_META[risk];
   return (
-    <div className="rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors p-3">
+    <div className="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors p-3">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-mono-num text-sm text-slate-100">#{r.item_id}</span>
-            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-[0.1em] ${meta.color} bg-slate-950 border border-slate-800`}>
+            <span className="font-mono-num text-sm text-slate-900 dark:text-slate-100">#{r.item_id}</span>
+            <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-[0.1em] ${meta.color} bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800`}>
               <span className={`w-1 h-1 rounded-full ${meta.dot}`} />
               {meta.label}
             </span>
           </div>
-          <div className="text-xs text-slate-400 mt-0.5 truncate">{r.warehouse_name}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 mt-0.5 truncate">{r.warehouse_name}</div>
         </div>
         {r.quantity_to_send > 0 && (
           <div className="text-right shrink-0">
-            <div className="text-[9px] uppercase tracking-[0.15em] font-bold text-slate-500">Send</div>
-            <div className="font-mono-num text-sm font-bold text-cyan-300">{r.quantity_to_send}</div>
+            <div className="text-[9px] uppercase tracking-[0.15em] font-bold text-slate-500 dark:text-slate-500 dark:text-slate-500">Send</div>
+            <div className="font-mono-num text-sm font-bold text-cyan-600 dark:text-cyan-300">{r.quantity_to_send}</div>
           </div>
         )}
       </div>
@@ -156,8 +156,8 @@ const RowCard = ({ r, risk }) => {
 };
 
 const Mini = ({ icon: Icon, label, value, accent = "text-slate-200" }) => (
-  <div className="rounded-md bg-slate-950 border border-slate-800 px-2 py-1.5">
-    <div className="flex items-center gap-1 text-[9px] uppercase tracking-[0.12em] text-slate-500 font-bold">
+  <div className="rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-2 py-1.5">
+    <div className="flex items-center gap-1 text-[9px] uppercase tracking-[0.12em] text-slate-500 dark:text-slate-500 dark:text-slate-500 font-bold">
       <Icon className="w-2.5 h-2.5" /> {label}
     </div>
     <div className={`font-mono-num text-sm mt-0.5 ${accent}`}>{value}</div>

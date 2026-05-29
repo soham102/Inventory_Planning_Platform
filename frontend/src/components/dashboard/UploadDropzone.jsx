@@ -98,14 +98,14 @@ export const UploadDropzone = () => {
           <>
             <div className="relative">
               <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center glow-cyan">
-                <UploadCloud className="w-7 h-7 text-cyan-300" strokeWidth={1.8} />
+                <UploadCloud className="w-7 h-7 text-cyan-600 dark:text-cyan-300" strokeWidth={1.8} />
               </div>
             </div>
-            <h2 className="mt-6 font-display text-2xl sm:text-3xl font-black tracking-tight text-slate-50">
+            <h2 className="mt-6 font-display text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-slate-50">
               Drop your Blinkit inventory file
             </h2>
-            <p className="mt-2 text-sm text-slate-400 max-w-md">
-              Upload the latest <span className="font-mono-num text-cyan-300">.xlsx</span> export.
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 max-w-md">
+              Upload the latest <span className="font-mono-num text-cyan-600 dark:text-cyan-300">.xlsx</span> export.
               We&apos;ll parse warehouse stock, sales velocity, and lead times to surface replenishment intelligence.
             </p>
             <div className="mt-6 flex items-center gap-3">
@@ -120,7 +120,7 @@ export const UploadDropzone = () => {
                 <FileSpreadsheet className="w-4 h-4 mr-2" />
                 Select Excel File
               </Button>
-              <span className="text-xs text-slate-500">or drag & drop</span>
+              <span className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500">or drag & drop</span>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-4 text-left max-w-2xl w-full">
               {[
@@ -128,10 +128,10 @@ export const UploadDropzone = () => {
                 { k: "02", t: "Analyze", d: "Risk + days-left model" },
                 { k: "03", t: "Recommend", d: "Quantity-to-send per SKU" },
               ].map((s) => (
-                <div key={s.k} className="rounded-lg border border-slate-800 bg-slate-900/40 p-3">
-                  <div className="font-mono-num text-[11px] text-cyan-300">{s.k}</div>
-                  <div className="mt-1 font-display font-bold text-sm text-slate-100">{s.t}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{s.d}</div>
+                <div key={s.k} className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100/40 dark:bg-slate-900/40 p-3">
+                  <div className="font-mono-num text-[11px] text-cyan-600 dark:text-cyan-300">{s.k}</div>
+                  <div className="mt-1 font-display font-bold text-sm text-slate-900 dark:text-slate-100">{s.t}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-0.5">{s.d}</div>
                 </div>
               ))}
             </div>
@@ -140,25 +140,25 @@ export const UploadDropzone = () => {
 
         {file && (
           <div className="w-full max-w-xl" data-testid={UPLOAD.status}>
-            <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-800 bg-slate-900/80">
+            <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80">
               <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center">
-                <FileSpreadsheet className="w-5 h-5 text-cyan-300" />
+                <FileSpreadsheet className="w-5 h-5 text-cyan-600 dark:text-cyan-300" />
               </div>
               <div className="flex-1 text-left min-w-0">
-                <div className="text-sm font-semibold text-slate-100 truncate">{file.name}</div>
-                <div className="text-xs text-slate-500 font-mono-num">
+                <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{file.name}</div>
+                <div className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 font-mono-num">
                   {(file.size / 1024).toFixed(1)} KB · ready
                 </div>
               </div>
               {isParsed ? (
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               ) : (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     reset();
                   }}
-                  className="text-xs text-slate-400 hover:text-slate-100 p-2"
+                  className="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 p-2"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -168,12 +168,12 @@ export const UploadDropzone = () => {
             {(isUploading || progress > 0) && (
               <div className="mt-4 space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-400 uppercase tracking-[0.15em] font-bold">
+                  <span className="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] font-bold">
                     {isParsed ? "Processed" : isUploading ? "Processing" : "Ready"}
                   </span>
-                  <span className="font-mono-num text-cyan-300">{progress}%</span>
+                  <span className="font-mono-num text-cyan-600 dark:text-cyan-300">{progress}%</span>
                 </div>
-                <Progress value={progress} className="h-1.5 bg-slate-800" />
+                <Progress value={progress} className="h-1.5 bg-slate-200 dark:bg-slate-800" />
               </div>
             )}
 
@@ -199,7 +199,7 @@ export const UploadDropzone = () => {
                 </Button>
               )}
               {isParsed && (
-                <div className="text-sm text-emerald-300 font-mono-num">
+                <div className="text-sm text-emerald-600 dark:text-emerald-300 font-mono-num">
                   ✓ Recommendations ready — scroll down
                 </div>
               )}

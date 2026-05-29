@@ -3,27 +3,13 @@ import {
   PieChart, Pie, Cell, Legend, LineChart, Line,
 } from "recharts";
 import { DASH } from "@/constants/testIds";
+import { useTheme, chartTokens } from "@/lib/theme";
 
-const TOOLTIP_STYLE = {
-  background: "#0F172A",
-  border: "1px solid #334155",
-  borderRadius: 8,
-  fontSize: 12,
-  color: "#F8FAFC",
-  boxShadow: "0 10px 25px rgba(0,0,0,0.45)",
-};
-
-const TOOLTIP_LABEL = { color: "#94A3B8", fontWeight: 600 };
-const TOOLTIP_ITEM = { color: "#F8FAFC" };
-
-const STATUS_COLORS = { HIGH: "#EF4444", MEDIUM: "#F59E0B", LOW: "#10B981" };
-const PIE_COLORS = ["#EF4444", "#F59E0B", "#10B981"];
-
-const PanelHeader = ({ title, sub, accent = "text-cyan-300" }) => (
+const PanelHeader = ({ title, sub, accent = "text-cyan-600 dark:text-cyan-300" }) => (
   <div className="flex items-start justify-between mb-3">
     <div>
       <div className={`text-[10px] uppercase tracking-[0.18em] font-bold ${accent}`}>{sub}</div>
-      <div className="font-display text-base font-bold text-slate-100 tracking-tight">{title}</div>
+      <div className="font-display text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">{title}</div>
     </div>
   </div>
 );
@@ -31,13 +17,32 @@ const PanelHeader = ({ title, sub, accent = "text-cyan-300" }) => (
 const Panel = ({ children, className = "", tid }) => (
   <div
     data-testid={tid}
-    className={`rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors p-4 ${className}`}
+    className={`rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors p-4 ${className}`}
   >
     {children}
   </div>
 );
 
+const STATUS_COLORS = { HIGH: "#EF4444", MEDIUM: "#F59E0B", LOW: "#10B981" };
+const PIE_COLORS = ["#EF4444", "#F59E0B", "#10B981"];
+
 export const ChartsSection = ({ charts }) => {
+  const { theme } = useTheme();
+  const t = chartTokens(theme);
+  const tooltipStyle = {
+    background: t.tooltipBg,
+    border: `1px solid ${t.tooltipBorder}`,
+    borderRadius: 8,
+    fontSize: 12,
+    color: t.tooltipText,
+    boxShadow: theme === "dark"
+      ? "0 10px 25px rgba(0,0,0,0.45)"
+      : "0 10px 25px rgba(15,23,42,0.08)",
+  };
+  const tooltipLabel = { color: t.tooltipLabel, fontWeight: 600 };
+  const tooltipItem = { color: t.tooltipText };
+  const legendStyle = { fontSize: 11, color: t.legend };
+
   const cityData = charts?.city_inventory ?? [];
   const riskData = charts?.risk_distribution ?? [];
   const topRisky = charts?.top_risky_skus ?? [];
@@ -46,20 +51,19 @@ export const ChartsSection = ({ charts }) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-      {/* Row 1 */}
       <Panel className="lg:col-span-2" tid={DASH.chartCity}>
         <PanelHeader title="City-wise Inventory Health" sub="Stockout risk by city" />
         <div className="h-56">
           <ResponsiveContainer>
             <BarChart data={cityData} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="city" tick={{ fill: "#94A3B8", fontSize: 11 }} tickLine={false} axisLine={{ stroke: "#1E293B" }} />
-              <YAxis tick={{ fill: "#64748B", fontSize: 11 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL} itemStyle={TOOLTIP_ITEM} cursor={{ fill: "rgba(34,211,238,0.05)" }} />
-              <Legend wrapperStyle={{ fontSize: 11, color: "#94A3B8" }} />
-              <Bar dataKey="high_risk_count" name="High" stackId="r" fill="#EF4444" radius={[0, 0, 0, 0]} />
-              <Bar dataKey="medium_risk_count" name="Medium" stackId="r" fill="#F59E0B" />
-              <Bar dataKey="low_risk_count" name="Low" stackId="r" fill="#10B981" radius={[4, 4, 0, 0]} />
+              <CartesianGrid stroke={t.grid} strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="city" tick={{ fill: t.tickPrimary, fontSize: 11 }} tickLine={false} axisLine={{ stroke: t.axis }} />
+              <YAxis tick={{ fill: t.tickMuted, fontSize: 11 }} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabel} itemStyle={tooltipItem} cursor={{ fill: t.cursorFill }} />
+              <Legend wrapperStyle={legendStyle} />
+              <Bar dataKey="high_risk_count" name="High" stackId="r" fill={STATUS_COLORS.HIGH} radius={[0, 0, 0, 0]} />
+              <Bar dataKey="medium_risk_count" name="Medium" stackId="r" fill={STATUS_COLORS.MEDIUM} />
+              <Bar dataKey="low_risk_count" name="Low" stackId="r" fill={STATUS_COLORS.LOW} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -78,7 +82,7 @@ export const ChartsSection = ({ charts }) => {
                 cy="50%"
                 innerRadius={45}
                 outerRadius={75}
-                stroke="#0F172A"
+                stroke={t.tooltipBg}
                 strokeWidth={2}
                 paddingAngle={2}
               >
@@ -86,8 +90,8 @@ export const ChartsSection = ({ charts }) => {
                   <Cell key={idx} fill={PIE_COLORS[idx]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL} itemStyle={TOOLTIP_ITEM} />
-              <Legend wrapperStyle={{ fontSize: 11, color: "#94A3B8" }} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabel} itemStyle={tooltipItem} />
+              <Legend wrapperStyle={legendStyle} />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -98,34 +102,33 @@ export const ChartsSection = ({ charts }) => {
         <div className="h-56">
           <ResponsiveContainer>
             <BarChart data={topRisky} layout="vertical" margin={{ top: 4, right: 8, bottom: 0, left: 8 }}>
-              <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" horizontal={false} />
-              <XAxis type="number" tick={{ fill: "#64748B", fontSize: 11 }} tickLine={false} axisLine={false} />
-              <YAxis type="category" dataKey="sku" tick={{ fill: "#94A3B8", fontSize: 10 }} tickLine={false} axisLine={false} width={140} />
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL} itemStyle={TOOLTIP_ITEM} cursor={{ fill: "rgba(34,211,238,0.05)" }} />
-              <Bar dataKey="qty_to_send" name="Qty to send" fill="#22D3EE" radius={[0, 4, 4, 0]} />
+              <CartesianGrid stroke={t.grid} strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" tick={{ fill: t.tickMuted, fontSize: 11 }} tickLine={false} axisLine={false} />
+              <YAxis type="category" dataKey="sku" tick={{ fill: t.tickPrimary, fontSize: 10 }} tickLine={false} axisLine={false} width={140} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabel} itemStyle={tooltipItem} cursor={{ fill: t.cursorFill }} />
+              <Bar dataKey="qty_to_send" name="Qty to send" fill={t.accentCyan} radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </Panel>
 
-      {/* Row 2 */}
       <Panel className="lg:col-span-3" tid={DASH.chartQty}>
-        <PanelHeader title="Quantity to Send · By City" sub="Replenishment volume" accent="text-emerald-300" />
+        <PanelHeader title="Quantity to Send · By City" sub="Replenishment volume" accent="text-emerald-600 dark:text-emerald-300" />
         <div className="h-56">
           <ResponsiveContainer>
             <LineChart data={qtyByCity} margin={{ top: 8, right: 12, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="city" tick={{ fill: "#94A3B8", fontSize: 11 }} tickLine={false} axisLine={{ stroke: "#1E293B" }} />
-              <YAxis tick={{ fill: "#64748B", fontSize: 11 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL} itemStyle={TOOLTIP_ITEM} />
+              <CartesianGrid stroke={t.grid} strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="city" tick={{ fill: t.tickPrimary, fontSize: 11 }} tickLine={false} axisLine={{ stroke: t.axis }} />
+              <YAxis tick={{ fill: t.tickMuted, fontSize: 11 }} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabel} itemStyle={tooltipItem} />
               <Line
                 type="monotone"
                 dataKey="quantity_to_send"
                 name="Qty"
-                stroke="#10B981"
+                stroke={t.accentEmerald}
                 strokeWidth={2.5}
-                dot={{ fill: "#10B981", r: 4, strokeWidth: 0 }}
-                activeDot={{ r: 6, stroke: "#10B981", strokeWidth: 2, fill: "#0F172A" }}
+                dot={{ fill: t.accentEmerald, r: 4, strokeWidth: 0 }}
+                activeDot={{ r: 6, stroke: t.accentEmerald, strokeWidth: 2, fill: t.accentDotStroke }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -133,17 +136,17 @@ export const ChartsSection = ({ charts }) => {
       </Panel>
 
       <Panel className="lg:col-span-2" tid={DASH.chartLeadTime}>
-        <PanelHeader title="Lead Time vs Inventory Days" sub="By city · comparison" accent="text-amber-300" />
+        <PanelHeader title="Lead Time vs Inventory Days" sub="By city · comparison" accent="text-amber-600 dark:text-amber-300" />
         <div className="h-56">
           <ResponsiveContainer>
             <BarChart data={leadVsInv} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
-              <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="city" tick={{ fill: "#94A3B8", fontSize: 11 }} tickLine={false} axisLine={{ stroke: "#1E293B" }} />
-              <YAxis tick={{ fill: "#64748B", fontSize: 11 }} tickLine={false} axisLine={false} />
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL} itemStyle={TOOLTIP_ITEM} cursor={{ fill: "rgba(34,211,238,0.05)" }} />
-              <Legend wrapperStyle={{ fontSize: 11, color: "#94A3B8" }} />
-              <Bar dataKey="lead_time" name="Lead time (d)" fill="#F59E0B" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="avg_days_left" name="Inventory days" fill="#22D3EE" radius={[4, 4, 0, 0]} />
+              <CartesianGrid stroke={t.grid} strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="city" tick={{ fill: t.tickPrimary, fontSize: 11 }} tickLine={false} axisLine={{ stroke: t.axis }} />
+              <YAxis tick={{ fill: t.tickMuted, fontSize: 11 }} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={tooltipLabel} itemStyle={tooltipItem} cursor={{ fill: t.cursorFill }} />
+              <Legend wrapperStyle={legendStyle} />
+              <Bar dataKey="lead_time" name="Lead time (d)" fill={t.accentAmber} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="avg_days_left" name="Inventory days" fill={t.accentCyan} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

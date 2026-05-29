@@ -2,6 +2,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppShell } from "@/components/layout/AppShell";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider, useTheme } from "@/lib/theme";
 import Dashboard from "@/pages/Dashboard";
 import InventoryHealth from "@/pages/InventoryHealth";
 import StockoutRisks from "@/pages/StockoutRisks";
@@ -9,9 +10,10 @@ import Recommendations from "@/pages/Recommendations";
 import Reports from "@/pages/Reports";
 import Settings from "@/pages/Settings";
 
-function App() {
+function AppInner() {
+  const { theme } = useTheme();
   return (
-    <div className="App dark">
+    <div className="App">
       <BrowserRouter>
         <AppShell>
           <Routes>
@@ -23,9 +25,17 @@ function App() {
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </AppShell>
-        <Toaster richColors theme="dark" position="bottom-right" />
+        <Toaster richColors theme={theme} position="bottom-right" />
       </BrowserRouter>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="dark">
+      <AppInner />
+    </ThemeProvider>
   );
 }
 

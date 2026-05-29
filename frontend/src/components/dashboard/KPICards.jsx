@@ -83,23 +83,23 @@ export const KPICards = ({ kpis }) => {
             data-testid={tid}
             onClick={() => navigate(to)}
             style={{ animationDelay: `${i * 60}ms` }}
-            className="text-left animate-fade-up group rounded-lg bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition-all p-4 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 cursor-pointer"
+            className="text-left animate-fade-up group rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all p-4 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 cursor-pointer"
           >
             <div className="flex items-start justify-between">
               <div className={`w-9 h-9 rounded-md ${bg} ${border} border flex items-center justify-center`}>
                 <Icon className={`w-4 h-4 ${accent}`} strokeWidth={2} />
               </div>
-              {trend === "up" && <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />}
-              {trend === "down" && <TrendingDown className="w-3.5 h-3.5 text-red-400" />}
-              {trend === "flat" && <span className="text-[10px] font-mono-num text-slate-500">—</span>}
+              {trend === "up" && <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
+              {trend === "down" && <TrendingDown className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />}
+              {trend === "flat" && <span className="text-[10px] font-mono-num text-slate-500 dark:text-slate-500 dark:text-slate-500">—</span>}
             </div>
-            <div className="mt-4 text-[10px] uppercase tracking-[0.15em] font-bold text-slate-500">{title}</div>
+            <div className="mt-4 text-[10px] uppercase tracking-[0.15em] font-bold text-slate-500 dark:text-slate-500 dark:text-slate-500">{title}</div>
             <div className={`mt-1 font-mono-num text-3xl lg:text-4xl font-bold tracking-tighter ${accent}`}>
               {fmt(value)}
             </div>
-            <div className="mt-1 flex items-center justify-between text-xs text-slate-500">
+            <div className="mt-1 flex items-center justify-between text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500">
               <span>{sub}</span>
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-cyan-300 font-bold uppercase tracking-[0.1em] text-[9px]">
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity text-cyan-600 dark:text-cyan-300 font-bold uppercase tracking-[0.1em] text-[9px]">
                 View →
               </span>
             </div>

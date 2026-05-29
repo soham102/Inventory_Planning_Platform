@@ -5,9 +5,19 @@
 @tailwind utilities;
 
 html, body, #root {
-  background-color: #020617;
-  color: #F8FAFC;
   min-height: 100vh;
+}
+
+/* Light mode (default) */
+html, body, #root {
+  background-color: #F8FAFC; /* slate-50 */
+  color: #0F172A;            /* slate-900 */
+}
+
+/* Dark mode override */
+html.dark, html.dark body, html.dark #root {
+  background-color: #020617; /* slate-950 */
+  color: #F8FAFC;            /* slate-50 */
 }
 
 body {
@@ -21,8 +31,37 @@ body {
 .font-mono-num { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
 
 @layer base {
+  /* Light mode (default) shadcn vars */
   :root {
-    /* Dark slate base mapped to shadcn vars so all shadcn components render dark by default */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 187 92% 31%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 187 92% 31%;
+    --radius: 0.5rem;
+    --chart-1: 187 92% 31%;
+    --chart-2: 160 84% 39%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 0 84% 60%;
+    --chart-5: 262 83% 58%;
+  }
+
+  /* Dark mode overrides */
+  .dark {
     --background: 222 47% 4%;
     --foreground: 210 40% 98%;
     --card: 222 47% 11%;
@@ -42,7 +81,6 @@ body {
     --border: 215 28% 17%;
     --input: 215 28% 17%;
     --ring: 187 85% 53%;
-    --radius: 0.5rem;
     --chart-1: 187 85% 53%;
     --chart-2: 160 84% 39%;
     --chart-3: 38 92% 50%;
@@ -56,24 +94,34 @@ body {
   body { @apply bg-background text-foreground; }
 }
 
-/* Tactical grid background pattern */
+/* Tactical grid background pattern - subtle for both themes */
 .tactical-grid {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.dark .tactical-grid {
   background-image:
     linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 
-/* Glow utilities */
-.glow-cyan { box-shadow: 0 0 24px rgba(34, 211, 238, 0.25); }
-.glow-emerald { box-shadow: 0 0 24px rgba(16, 185, 129, 0.25); }
-.glow-red { box-shadow: 0 0 18px rgba(239, 68, 68, 0.25); }
+/* Glow utilities — dark only */
+.glow-cyan { box-shadow: 0 0 24px rgba(34, 211, 238, 0.18); }
+.glow-emerald { box-shadow: 0 0 24px rgba(16, 185, 129, 0.18); }
+.glow-red { box-shadow: 0 0 18px rgba(239, 68, 68, 0.18); }
+:root:not(.dark) .glow-cyan,
+:root:not(.dark) .glow-emerald,
+:root:not(.dark) .glow-red { box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #0F172A; }
-::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #475569; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+.dark ::-webkit-scrollbar-track { background: #0F172A; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
 /* Subtle entrance animation */
 @keyframes fade-up {
@@ -87,8 +135,3 @@ body {
   50% { opacity: 0.6; transform: scale(1.4); }
 }
 .animate-pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
-
-/* Hide debug wrapper utility */
-@layer base {
-  [data-debug-wrapper="true"] { display: contents !important; }
-}
