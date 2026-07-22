@@ -1,6 +1,7 @@
 # Inventory Command Center 📦
 
 Platform Link: https://stock-control-383.preview.emergentagent.com/
+
 Input Sheet: https://docs.google.com/spreadsheets/d/1m9JNd1g7Sz55Pj8b6LgFiQkUGhqmjhlk/edit?usp=sharing&ouid=109666922920908799115&rtpof=true&sd=true
 
 Inventory Command Center is an AI-powered inventory analytics and replenishment dashboard designed for Quick Commerce and retail operations. It enables operations teams to monitor inventory health across multiple warehouses, identify stockout risks, and make data-driven replenishment decisions through an intuitive, real-time dashboard.
